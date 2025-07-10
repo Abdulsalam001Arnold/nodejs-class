@@ -3,6 +3,7 @@ const app = express()
 const contactRoute = require('./routes/contactRoutes')
 const userRoute = require('./routes/userRoute')
 const mongoose = require('mongoose')
+const cors = require('cors')
 require('dotenv').config()
 
 
@@ -14,15 +15,18 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+app.use(cors)
 app.use('/api',contactRoute, userRoute)
-app.get('/info', (req, res) => {
-  console.log(`Made a ${req.method} request to ${req.url} headers: ${JSON.stringify(req.headers)}`)
-  res.redirect('/')
-  res.send('This is the info page')
-})
 app.listen(5000, () => {
     console.log('Server is running on port 5000')
 })
-
-
-export default app;
+module.exports = app

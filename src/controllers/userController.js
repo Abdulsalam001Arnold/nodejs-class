@@ -86,7 +86,7 @@ const getAll = async (req, res) => {
       res.status(404).json({ message: "No users found" });
     }
 
-    res.status(200).json(users);
+    res.status(200).json({data: users, status: 'OK', message: 'Users fetched successfully!'});
   } catch (err) {
     console.error(err);
     res.status(500).json(err);
@@ -101,7 +101,7 @@ const getSingleUser = async (req, res) => {
       res.status(404).json({ message: "User does not exist!!!" });
     }
 
-    res.status(200).json(user);
+    res.status(200).json({data: user, status: 'OK', message: 'User fetched successfully!'});
   } catch (err) {
     console.error(err);
     res.status(500).json(err);
@@ -109,7 +109,3 @@ const getSingleUser = async (req, res) => {
 };
 
 module.exports = { registerUser, loginUser, getAll, getSingleUser };
-
-// router.post("/upload/profile/:id", upload.single("profilePicture"), uploadProfilePicture);
-
-// router.post("/upload/products/:id", upload.array("products", 5), uploadProducts);
