@@ -2,9 +2,9 @@
 const Contact = require('../models/contactSchema')
 const contactValidator = require('../validators/contactValidator')
 
-const getHome = (request, response) => {
-    response.send('Hello guys!!!');
-}
+// const getHome = (request, response) => {
+//     response.send('Hello guys!!!');
+// }
 
 const getAbout = (request, response) => {
     response.send('This is the about page');
@@ -69,7 +69,7 @@ const getSingle = async (req, res) => {
 }
 
 
-module.exports = { getHome, getAbout, newContact, getContacts, getSingle, deleteSingle }
+module.exports = { getAbout, newContact, getContacts, getSingle, deleteSingle }
 
 
 

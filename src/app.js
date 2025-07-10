@@ -25,6 +25,9 @@ app.use(function (req, res, next) {
   next();
 });
 app.use(cors)
+app.get('/', (req, res) => {
+  res.send('Welcome to our hosted API guys!!')
+})
 app.use('/api',contactRoute, userRoute)
 app.listen(5000, () => {
     console.log('Server is running on port 5000')
