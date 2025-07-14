@@ -37,23 +37,26 @@ app.use(function (req, res, next) {
 });
 
 
-
+// Basic route for testing
 app.get('/', (req, res) => {
   res.send('Welcome to our hosted API guys!!');
 });
 
 // Route handlers
-app.use('/api', contactRoute); 
+app.use('/api', contactRoute); // Assuming contactRoute handles /api/contacts etc.
+app.use('/api', userRoute);    // Assuming userRoute handles /api/users etc.
+// You might want to be more specific, e.g., app.use('/api/contacts', contactRoute)
+// and app.use('/api/users', userRoute) if they handle their own base paths.
 
 
-
-
+// This is the crucial change for Vercel:
+// Only listen on a port if not in a serverless environment (e.g., local development)
 const PORT = process.env.PORT || 5000;
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') { // Or check if process.env.VERCEL is undefined
   app.listen(PORT, () => {
     console.log(`Server running locally on port ${PORT}`);
   });
 }
 
-
+// Export the app instance for Vercel (and other environments)
 module.exports = app;
