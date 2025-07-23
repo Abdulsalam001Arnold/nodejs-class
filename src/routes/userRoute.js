@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const upload = require('../middleware/upload')
 const { protect } = require('../middleware/authMiddleware')
-// To handle all routes
+
 
 const { registerUser, loginUser, getAll, getSingleUser } = require("../controllers/userController");
 

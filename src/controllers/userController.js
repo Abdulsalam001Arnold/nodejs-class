@@ -6,9 +6,7 @@ const Product = require("../models/productSchema");
 
 const registerUser = async (req, res) => {
   try {
-    const { fullName, email, password, bio } = req.body;
-
-    const profilePicture = req.file;
+    const { fullName, email, password } = req.body;
 
     if (fullName !== "" && email !== "" && password !== "") {
       const exists = await User.findOne({ email });
@@ -35,7 +33,6 @@ const registerUser = async (req, res) => {
           fullName: user.fullName,
           email: user.email,
           password: user.password,
-          profile,
         },
         token: generateToken(user._id),
       });
@@ -47,6 +44,33 @@ const registerUser = async (req, res) => {
     res.status(500).json({ message: "Internal server error!" });
   }
 };
+
+const createProfile = async(req, res) => {
+  const { bio } = req.body
+  const profilePicture = req.file;
+  try{
+    const exists = await User.findOne({ email });
+      if (exists) {
+        if(bio && profilePicture) {
+          const profile = await Profile.create({
+            bio,
+            profilePicture,
+          });
+          res.status(201).json({
+            message: 'Created profile',
+            data: profile,
+            status: 'success'
+          })
+        }
+      }
+
+  }catch(err){
+    console.error(err)
+    res.status(500).json({
+      message: "An error occured, try agin later."
+    })
+  }
+}
 
 const loginUser = async (req, res) => {
   try {
@@ -108,4 +132,4 @@ const getSingleUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, getAll, getSingleUser };
+module.exports = { registerUser, loginUser, getAll, getSingleUser, createProfile };
