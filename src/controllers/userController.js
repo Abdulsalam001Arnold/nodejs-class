@@ -6,8 +6,8 @@ const Product = require("../models/productSchema");
 
 const registerUser = async (req, res) => {
   try {
-    const { fullName, email, password } = req.body;
-
+    const { fullName, email, password, bio } = req.body;
+  const profilePicture = req.file;
     if (fullName !== "" && email !== "" && password !== "") {
       const exists = await User.findOne({ email });
       if (exists) {
@@ -23,7 +23,9 @@ const registerUser = async (req, res) => {
         fullName,
         email,
         password,
-        profile: profile?._id,
+        bio,
+        profilePicture,
+        profile: profile?.id
       });
 
       res.status(201).json({
@@ -32,7 +34,9 @@ const registerUser = async (req, res) => {
           _id: user._id,
           fullName: user.fullName,
           email: user.email,
+          bio,
           password: user.password,
+          profile
         },
         token: generateToken(user._id),
       });
