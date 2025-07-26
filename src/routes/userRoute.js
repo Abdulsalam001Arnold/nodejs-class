@@ -4,6 +4,7 @@ const upload = require('../middleware/upload')
 const { protect } = require('../middleware/authMiddleware')
 
 
+
 const { registerUser, loginUser, getAll, getSingleUser } = require("../controllers/userController");
 
 
