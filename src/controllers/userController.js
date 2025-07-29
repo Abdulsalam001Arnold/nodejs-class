@@ -3,11 +3,16 @@ const generateToken = require("../utils/generateToken");
 const bcrypt = require("bcryptjs");
 const Profile = require("../models/profileSchema");
 const Product = require("../models/productSchema");
+const { uploadToCloudinary } = require('../utils/cloudinaryUpload')
 
 const registerUser = async (req, res) => {
   try {
     const { fullName, email, password, bio } = req.body;
-    const profilePicture = req.file?.path || "";
+    let profilePictureUrl = ''
+
+    if(req.file){
+      profilePictureUrl = await uploadToCloudinary(req.file.buffer)
+    }
     if (fullName !== "" && email !== "" && password !== "") {
       const exists = await User.findOne({ email });
       if (exists) {
@@ -16,7 +21,7 @@ const registerUser = async (req, res) => {
 
       const profile = await Profile.create({
         bio,
-        profilePicture,
+        profilePicture: profilePictureUrl,
       });
 
       const user = await User.create({
@@ -24,6 +29,7 @@ const registerUser = async (req, res) => {
         email,
         password,
         bio,
+        profilePicture: profilePictureUrl,
         profile: profile?.id
       });
 
